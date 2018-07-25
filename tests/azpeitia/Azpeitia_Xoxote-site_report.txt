@@ -1,0 +1,21 @@
+
+	--==[ SPLAT! v1.4.2 Site Analysis Report For: Azpeitia Xoxote ]==--
+
+---------------------------------------------------------------------------
+
+Site location: 43.1989 North / 2.2841 West (43° 11' 56" N / 2° 17' 2" W)
+Ground elevation: 887.00 meters AMSL
+Antenna height: 6.10 meters AGL / 893.10 meters AMSL
+Antenna height above average terrain: 562.89 meters
+
+Average terrain at   0 degrees azimuth: 149.38 meters AMSL
+Average terrain at  45 degrees azimuth: 160.30 meters AMSL
+Average terrain at  90 degrees azimuth: 394.66 meters AMSL
+Average terrain at 135 degrees azimuth: 438.58 meters AMSL
+Average terrain at 180 degrees azimuth: 430.92 meters AMSL
+Average terrain at 225 degrees azimuth: 363.74 meters AMSL
+Average terrain at 270 degrees azimuth: 314.97 meters AMSL
+Average terrain at 315 degrees azimuth: 389.08 meters AMSL
+
+---------------------------------------------------------------------------
+

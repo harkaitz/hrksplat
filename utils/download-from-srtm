@@ -1,0 +1,112 @@
+#!/usr/bin/env tclsh
+#l:
+set getsrtm_dir [file dirname [info script]]
+source $getsrtm_dir/convert-coordinate
+
+
+proc download-from-srtm { {arg0 -h} args } {
+    set help "
+    Usage: download-from-srtm OPTS COORDINATES...
+
+    Requires; unzip,wget and srtm2sdf.
+
+    -c : Convert to SPLAT using srtm2sdf.
+
+    For example to download the Basque Country.
+    > download-from-srtm 42,-1 42,-2 42,-3 42,-4 43,-1 43,-2 43,-3 43,-4 44,-1 44,-2
+
+    Copyright (c) 2018, Harkaitz Agirre Ezama, All rights reserved.
+"
+    if {$arg0 eq {-h}} {
+	puts $help
+	return {}
+    }
+    foreach arg [list $arg0 {*}$args] {
+	switch $arg {
+	    -c      { set do_update 1                    }
+	    default { puts [download-from-srtm-get $arg] }
+	}	
+    }
+    if {[info exists do_update]} {
+	download-from-srtm-update
+    }
+}
+proc download-from-srtm-get { coor } {
+    set srtm3 "http://dds.cr.usgs.gov/srtm/version2_1/SRTM3"
+    set coors [convert-coordinate -n $coor]
+    set filename [join $coors ""].hgt.zip
+    set output [download-from-srtm-srtmdir]/$filename
+    ## Check wget exists.
+    if {[catch {
+	set ver [exec wget -V]
+    } err]} {
+	error $ver
+    }
+    ## Try to download.
+    if {[file exists $output] == 0} {
+	foreach continent {Eurasia North_America South_America Africa Australia Islands  } {
+	    if {[catch {
+		exec wget -O $output.tmp $srtm3/$continent/$filename \
+		    >@ stdout 2>@ stderr <@ stdin
+		file rename $output.tmp $output
+	    } err]} {
+		
+	    } else {
+		break
+	    }
+	}
+	if {[file exists $output] == 0} {
+	    puts stderr "ERROR: Can't download $output."
+	}
+    }
+    return $output
+}
+proc download-from-srtm-update { } {
+    set srtm_dir [download-from-srtm-srtmdir]
+    set sdf_dir  [download-from-srtm-sdfdir]
+    set curdir   [pwd]
+    cd $sdf_dir
+    foreach f [glob -nocomplain -type f -directory $srtm_dir *.zip] {
+	exec unzip -u $f -d $srtm_dir >@ stdout 2>@ stderr <@ stdin
+	if {[catch {
+	    exec srtm2sdf [file rootname $f] >@ stdout 2>@ stderr <@ stdin
+	} err]} {
+	    catch { file delete -force [file rootname $f] }
+	    error $err
+	} else {
+	    file delete -force [file rootname $f]
+	}
+    }
+    cd $curdir
+    return {}
+}
+
+proc download-from-srtm-sdfdir { } {
+    global env
+    set dir $env(HOME)/.local/share/geodata/sdf
+    set fp [open $env(HOME)/.splat_path wb]
+    puts $fp $dir
+    close $fp
+    file mkdir $dir
+    return $dir
+}
+proc download-from-srtm-srtmdir { } {
+    global env
+    set dir $env(HOME)/.local/share/geodata/srtm
+    file mkdir $dir
+    return $dir
+}
+
+
+
+
+if { [info script] eq $::argv0 } {
+    if {[catch {
+        download-from-srtm {*}$argv
+    } err]} {
+        puts stderr "download-from-srtm: $err"
+        exit 1
+    }
+}
+
+

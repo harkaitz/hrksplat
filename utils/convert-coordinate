@@ -1,0 +1,69 @@
+#!/usr/bin/env tclsh
+#l:
+proc convert-coordinate { {arg0 -h} args } {
+    set help "
+    Usage: convert-coordinate FORMAT COORDINATE
+
+    Geographic coordinate handling.
+
+    ## Formats;
+
+    -n : Get NSEW coordinate format. (For SRTM).
+    -N : Get number coordinate format.
+
+    ## Example;
+
+    > convert-coordinate -n 41,-1
+
+    Copyright (c) 2018, Harkaitz Agirre Ezama, All rights reserved.
+    "
+    switch $arg0 {
+	-h      { return $help }
+	-n      { return [convert-coordinate-nsew-coordinates {*}$args]   }
+	-N      { return [convert-coordinate-number-coordinates {*}$args] }
+	default { error "Invalid argument `$arg0`" }
+    }
+}
+proc convert-coordinate-number-coordinates { nums } {
+    set ret [list]
+    foreach num [split $nums ","] {
+	set sign "1"
+	if {[regexp {[SsWeOo]} $num ign]} { set sign -1 }
+	regsub -all {[SsWeOo]} $num {} num
+	regsub -all {º}    $num { }        num
+	regsub -all {''}   $num {/3600.0 } num
+	regsub -all "\""   $num {/3600.0 } num
+	regsub -all {'}    $num {/60.0 }   num
+	regsub -all {  *}  $num {+}        num
+	regsub      {\+*$} $num {}         num
+	set num [expr $sign*($num)]
+	lappend ret $num
+    }
+    return $ret
+}
+proc convert-coordinate-nsew-coordinates { nums } {
+    set nums [convert-coordinate-number-coordinates $nums]
+    if {[llength $nums] < 2} { error "Please specify two coordinates." }
+    set ret [list]
+    set lat [lindex $nums 0]; set log [lindex $nums 1]
+    regsub {\..*} $lat {} lat;  regsub {\..*} $log {} log
+    if {$lat > 0} {
+	lappend ret [format "N%02d" $lat]
+    } else {
+	lappend ret [format "S%02d" [expr $lat * -1]]
+    }
+    if {$log > 0} {
+	lappend ret [format "E%03d" $log]
+    } else {
+	lappend ret [format "W%03d" [expr $log * -1]]
+    }
+    return $ret
+}
+if { [info script] eq $::argv0 } {
+    if {[catch {
+        puts [convert-coordinate {*}$argv]
+    } err]} {
+        puts stderr "hrkpass: $err"
+        exit 1
+    }
+}
