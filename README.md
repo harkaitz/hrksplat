@@ -2,7 +2,7 @@
 
 SPLAT! is a terrestrial RF Path and Terrain Analysis Tool for Unix/Linux.
 
-![](dist/example-pathloss.jpeg =250x)
+![](dist/example-pathloss.jpeg | width=300)
 
 
 + Read [CHANGES](CHANGES) to see the author names of this program.
