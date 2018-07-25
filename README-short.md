@@ -11,7 +11,7 @@ and has some future as a webtool, because of that I decided to maintain a fork.
 Some functionality has been added, some removed. The project can be built
 using `cmake` now.
 
-![](./pic/pic1s.png =250x)
+![](https://raw.githubusercontent.com/harkaitz/hrksplat/master/dist/example-pathloss.jpeg =250x)
 
 Pathloss and coverage of an Antenna on top of Izarraitz.
 
