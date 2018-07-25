@@ -1,2 +1,3 @@
 .build
 fontconfig
+dist/_CPack_Packages

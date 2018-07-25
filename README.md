@@ -9,10 +9,7 @@ SPLAT! is a terrestrial RF Path and Terrain Analysis Tool for Unix/Linux.
 
 ## Installation Instructions
 
-You can download a prebuilt distribution;
-
-+ [Windows 32 bit](.build/i686-w64-mingw32)
-+ [Linux 64 bit](.build/x86_64-redhat-linux)
+You can download a prebuilt distribution [here](dist)
 
 Extract in the selected prefix;
 
