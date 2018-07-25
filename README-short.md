@@ -11,12 +11,7 @@ and has some future as a webtool, because of that I decided to maintain a fork.
 Some functionality has been added, some removed. The project can be built
 using `cmake` now.
 
-![](https://raw.githubusercontent.com/harkaitz/hrksplat/master/dist/example-pathloss.jpeg =250x)
-
-Pathloss and coverage of an Antenna on top of Izarraitz.
-
-- [Pathloss](https://github.com/harkaitz/hrksplat/tests/azpeitia/out/pathloss-azpeitia.ppm)
-- [Coverage](https://github.com/harkaitz/hrksplat/tests/azpeitia/out/coverage-azpeitia.ppm)
+<img src="https://raw.githubusercontent.com/harkaitz/hrksplat/master/dist/example-pathloss.jpeg" width=600>
 
 Basque town and city list.
 
