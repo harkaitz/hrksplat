@@ -9,6 +9,7 @@ set (CPACK_PACKAGE_VERSION_MINOR "${splat_VERSION_MINOR}")
 set (CPACK_GENERATOR             ZIP STGZ)
 include (CPack)
 
+
 # -- C/C++ flags.
 if ( CMAKE_COMPILER_IS_GNUCC )
   set(CMAKE_C_FLAGS
